@@ -3,6 +3,7 @@
 
 #include "Renderer.h"
 #include "Window.h"
+#include "DrawEvent.h"
 
 using std::cout;
 using std::endl;
@@ -32,10 +33,28 @@ int main(int argc, char* argv[])
 		cout << "FAILED at SDL_INIT" << endl;
 	}
 
+	//test window and renderer
 	Window testW("test", 720, 450);
 	Renderer testR(testW.getWindow(), bgColor);
 
+	//test draw events
+	SDL_Color lineColor = { 52, 104, 235, 255 };
+	SDL_Point lStart = { 0,0 };
+	SDL_Point lEnd = { 100, 200 };
+	DrawEvent line(Type::LINE, lineColor, testR.getRenderer(), lStart, lEnd);
+
+	SDL_Color rectColor = { 52, 235, 192, 255 };
+	SDL_Rect rectD = { 0,200,30,30 };
+	DrawEvent fill(Type::FILLRECT, rectColor, testR.getRenderer(), rectD);
+
+	SDL_Color nodeColor = { 235, 52, 52, 255 };
+	SDL_Point nodeStart = { WIDTH/2, 30 };
+	DrawEvent node(Type::NODE, nodeColor, testR.getRenderer(), nodeStart, 20);
+
 	while (running) {
+		testR.addDrawEvent(&line);
+		testR.addDrawEvent(&fill);
+		testR.addDrawEvent(&node);
 
 		while (SDL_PollEvent(&e) != 0) {
 			switch (e.type) {

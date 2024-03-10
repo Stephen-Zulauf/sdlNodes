@@ -1,4 +1,5 @@
-﻿  Renderer.cpp
-  main.cpp
+﻿  DrawEvent.cpp
+  Renderer.cpp
   Generating Code...
+C:\Users\ZU420\source\repos\122real\projects\sdlBase\sdlBase\DrawEvent.cpp(128): warning C4715: 'DrawEvent::draw': not all control paths return a value
   sdlBase.vcxproj -> C:\Users\ZU420\source\repos\122real\projects\sdlBase\x64\Debug\sdlBase.exe

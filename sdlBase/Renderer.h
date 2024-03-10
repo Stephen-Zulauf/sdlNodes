@@ -2,6 +2,9 @@
 
 #include <SDL.h>
 #include <iostream>
+#include <queue>
+
+#include "DrawEvent.h"
 
 using std::cout;
 using std::endl;
@@ -12,6 +15,7 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	SDL_Window* window = nullptr;
 	//drawing queue
+	std::queue<DrawEvent*> dQueue;
 
 public:
 	//default black screen
@@ -43,4 +47,7 @@ public:
 
 	//Update renderer
 	bool updateRenderer();
+
+	//add draw event
+	void addDrawEvent(DrawEvent* nEvent);
 };

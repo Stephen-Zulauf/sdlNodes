@@ -27,6 +27,10 @@ bool Renderer::updateRenderer() {
 	if (SDL_SetRenderDrawColor(this->renderer, this->bgColor.r, this->bgColor.g, this->bgColor.b, this->bgColor.a) == 0) {
 		if (SDL_RenderClear(this->renderer) == 0) {
 			//draw queue here
+			for (int i = 0; i < this->dQueue.size(); i++) {
+				this->dQueue.front()->draw();
+				this->dQueue.pop();
+			}
 
 			SDL_RenderPresent(this->renderer);
 
@@ -41,6 +45,9 @@ bool Renderer::updateRenderer() {
 		cout << "ERR updateRenderer: SetRenderDrawColor failed" << endl;
 		return false;
 	}
-	
-	
+}
+
+//add draw event
+void Renderer::addDrawEvent(DrawEvent* nEvent) {
+	this->dQueue.push(nEvent);
 }
