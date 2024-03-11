@@ -121,6 +121,43 @@ bool DrawEvent::draw() {
 		}
 		break;
 
+	case TEXT:
+		//load font file
+		this->font = TTF_OpenFont(this->File.c_str(), this->textSize);
+		if (this->font) {
+			//create surface from file
+			this->surface = TTF_RenderText_Solid(this->font, this->text.c_str(), this->color);
+
+			if (this->surface) {
+				//render texture from surface
+				this->texture = SDL_CreateTextureFromSurface(this->renderer, this->surface);
+
+				if (this->texture) {
+					//copy rendered texture to render window
+					int textW = 0;
+					int textH = 0;
+					SDL_QueryTexture(this->texture, NULL, NULL, &textW, &textH);
+					SDL_Rect dest = { this->start.x, this->start.y,textW,textH };
+					SDL_RenderCopy(this->renderer, this->texture, NULL, &dest);
+
+					return true;
+				}
+				else {
+					cout << "ERR DRAWEVENT TEXT: SDL_CreateTextureFromSurface failed" << endl;
+					return false;
+				}
+			}
+			else {
+				cout << "ERR DRAWEVENT TEXT: TTF_RenderText_Solid failed" << endl;
+				return false;
+			}
+		}
+		else {
+			cout << "ERR DRAWEVENT TEXT: TTF_OpenFont failed" << endl;
+			return false;
+		}
+		break;
+
 	default:
 		cout << "ERR DRAWEVENT: failed to resolve switch case" << endl;
 		return false;

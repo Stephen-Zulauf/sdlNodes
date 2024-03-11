@@ -28,7 +28,7 @@ bool Renderer::updateRenderer() {
 		if (SDL_RenderClear(this->renderer) == 0) {
 			//draw queue here
 			for (int i = 0; i < this->dQueue.size(); i++) {
-				this->dQueue.front()->draw();
+				this->dQueue.front().draw();
 				this->dQueue.pop();
 			}
 
@@ -48,6 +48,6 @@ bool Renderer::updateRenderer() {
 }
 
 //add draw event
-void Renderer::addDrawEvent(DrawEvent* nEvent) {
+void Renderer::addDrawEvent(DrawEvent nEvent) {
 	this->dQueue.push(nEvent);
 }

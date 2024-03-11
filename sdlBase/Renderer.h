@@ -15,7 +15,7 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	SDL_Window* window = nullptr;
 	//drawing queue
-	std::queue<DrawEvent*> dQueue;
+	std::queue<DrawEvent> dQueue;
 
 public:
 	//default black screen
@@ -49,5 +49,5 @@ public:
 	bool updateRenderer();
 
 	//add draw event
-	void addDrawEvent(DrawEvent* nEvent);
+	void addDrawEvent(DrawEvent nEvent);
 };
