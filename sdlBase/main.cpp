@@ -5,24 +5,14 @@
 #include "Window.h"
 #include "DrawEvent.h"
 
+#include "BSTree.h"
+
 using std::cout;
 using std::endl;
 
 int WIDTH = 720;
 int HEIGHT = 720;
-SDL_Renderer* renderer;
-SDL_Window* window;
-SDL_Color color;
 bool running = true;
-int frameCount, timerFPS, lastFrame, fps;
-
-//void render() {
-//	frameCount++;
-//	timerFPS = SDL_GetTicks() - lastFrame;
-//	if (timerFPS > (100 / 60)) {
-//		SDL_Delay((1000 / 60) - timerFPS);
-//	}
-//}
 
 int main(int argc, char* argv[])
 {
@@ -41,31 +31,51 @@ int main(int argc, char* argv[])
 	Window testW("test", 720, 450);
 	Renderer testR(testW.getWindow(), bgColor);
 
-	//test draw events
-	SDL_Color lineColor = { 52, 104, 235, 255 };
-	SDL_Point lStart = { 0,0 };
-	SDL_Point lEnd = { 100, 200 };
+	////test draw events
+	//SDL_Color lineColor = { 52, 104, 235, 255 };
+	//SDL_Point lStart = { 0,0 };
+	//SDL_Point lEnd = { 100, 200 };
 
-	DrawEvent* line = new DrawEvent(Type::LINE, lineColor, testR.getRenderer(), lStart, lEnd);
+	//DrawEvent* line = new DrawEvent(Type::LINE, lineColor, testR.getRenderer(), lStart, lEnd);
 
-	SDL_Color rectColor = { 52, 235, 192, 255 };
-	SDL_Rect rectD = { 0,200,30,30 };
-	DrawEvent fill(Type::FILLRECT, rectColor, testR.getRenderer(), rectD);
+	//SDL_Color rectColor = { 52, 235, 192, 255 };
+	//SDL_Rect rectD = { 0,200,30,30 };
+	//DrawEvent fill(Type::FILLRECT, rectColor, testR.getRenderer(), rectD);
 
-	SDL_Color nodeColor = { 235, 52, 52, 255 };
-	SDL_Point nodeStart = { WIDTH/2, 30 };
-	DrawEvent node(Type::NODE, nodeColor, testR.getRenderer(), nodeStart, 20);
+	//SDL_Color nodeColor = { 235, 52, 52, 255 };
+	//SDL_Point nodeStart = { WIDTH/2, 30 };
+	//DrawEvent node(Type::NODE, nodeColor, testR.getRenderer(), nodeStart, 20);
 
-	SDL_Point textStart = { (WIDTH / 2) - 12, 30-12 };
-	DrawEvent text(Type::TEXT, nodeColor, testR.getRenderer(), textStart, "99", 20, "RobotoMono-Thin.ttf");
+	//SDL_Point textStart = { (WIDTH / 2) - 12, 30-12 };
+	//DrawEvent text(Type::TEXT, nodeColor, testR.getRenderer(), textStart, "THIS is a Test oopPOP", 20, "RobotoMono-Thin.ttf");
 	
+	//test binary tree
+	BST testTree(WIDTH/2);
+
+	testTree.insertNode("8", testTree.getRoot());
+	testTree.insertNode("5", testTree.getRoot());
+	testTree.insertNode("10", testTree.getRoot());
+	testTree.insertNode("2", testTree.getRoot());
+	testTree.insertNode("6", testTree.getRoot());
+	testTree.insertNode("9", testTree.getRoot());
+	testTree.insertNode("11", testTree.getRoot());
+	
+	/*testTree.insertNode("15", testTree.getRoot());
+	testTree.insertNode("17", testTree.getRoot());
+	testTree.insertNode("16", testTree.getRoot());*/
+
+	//testTree.mapNodes(testTree.getRoot());
+	
+	int depth = testTree.getMaxDepth(testTree.getRoot());
+	cout << "depth: " << depth << endl;
+
+	testTree.postOrderTraversal(testTree.getRoot());
+
+	SDL_Point nodeStart = { WIDTH / 2, 30 };
 
 	while (running) {
-		testR.addDrawEvent(*line);
-		testR.addDrawEvent(fill);
-		testR.addDrawEvent(node);
-		testR.addDrawEvent(text);
-
+		testTree.drawTree(&testR, 20, 11, false, testTree.getRoot());
+		
 		while (SDL_PollEvent(&e) != 0) {
 			switch (e.type) {
 			case SDL_QUIT:
@@ -78,6 +88,9 @@ int main(int argc, char* argv[])
 		if (!testR.updateRenderer()) {
 			running = false;
 		}
+
+		testTree.setYlevel(0);
+		testTree.setXlevel(0);
 		
 	}
 	/*SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "hello world","Success",NULL);*/

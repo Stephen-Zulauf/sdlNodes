@@ -10,6 +10,18 @@ void BSTNode::setLeft(BSTNode* nLeft) {
 void BSTNode::setRight(BSTNode* nRight) {
 	this->right = nRight;
 }
+void BSTNode::setParent(BSTNode* nParent) {
+	this->parent = nParent;
+}
+void BSTNode::setX(float nX) {
+	this->X = nX;
+}
+void BSTNode::setY(float nY) {
+	this->Y = nY;
+}
+void BSTNode::setMod(float nMod) {
+	this->mod = nMod;
+}
 
 string BSTNode::getData() const {
 	return this->data;
@@ -19,6 +31,18 @@ BSTNode* BSTNode::getLeft() const {
 }
 BSTNode* BSTNode::getRight() const {
 	return this->right;
+}
+BSTNode* BSTNode::getParent() const {
+	return this->parent;
+}
+float BSTNode::getX() const{
+	return this->X;
+}
+float BSTNode::getY() const{
+	return this->Y;
+}
+float BSTNode::getMod() const{
+	return this->mod;
 }
 
 //overload for printing
@@ -36,6 +60,9 @@ ostream& operator<<(ostream& os, const BSTNode& node) {
 	else {
 		os << "right:" << "false" << endl;
 	}
+	os << "X: " << node.getX() << endl;
+	os << "Y: " << node.getY() << endl;
+	os << "MOD: " << node.getMod() << endl;
 
 	return os;
 
