@@ -19,16 +19,16 @@ private:
 	BSTNode* root;
 
 	//x level for drawing
-	int xLevel = 0;
+	float xLevel = 0;
 	//y level for drawing
-	int yLevel = 0;
+	float yLevel = 0;
 
 	//delete tree
 	void destroyTree();
 
 public:
 	/*constructors*/
-	BST(float nCenter) {
+	BST() {
 		this->root = nullptr;
 	}
 	/*destructor*/
@@ -66,6 +66,6 @@ public:
 	int getXlevel();
 
 	//send to renderer
-	void drawTree(Renderer* nRenderer, int width, int height, bool isLeft, BSTNode* start);
+	void drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft, BSTNode* start);
 
 };

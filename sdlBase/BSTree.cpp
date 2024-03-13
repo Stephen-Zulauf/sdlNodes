@@ -138,56 +138,60 @@ int BST::getXlevel() {
 }
 
 //send to renderer; preorder traversal
-void BST::drawTree(Renderer* nRenderer, int width, int height, bool isLeft, BSTNode* start) {
+void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft, BSTNode* start) {
 	
-	SDL_Color nodeColor = { 235, 52, 52, 255 };
-	//vector<DrawEvent> history;
+	SDL_Color nodeColor = { 51, 150, 61, 255 };
 
 	if (start == nullptr) {
 		return;
 	}
 	else
 	{
-		SDL_Point startPoint = { width, this->getYlevel()};
-		SDL_Point dataPoint = { width + 20, this->getYlevel()};
-		SDL_Point strPoint = { width - 20, this->getYlevel()};
+		SDL_Point dataPoint = { startX + nHeight, this->getYlevel()};
+		SDL_Point lSPoint = { startX + nHeight/4, this->getYlevel() + nHeight/4 };
+		SDL_Point lEPoint = { startX + (nHeight-nHeight/5), this->getYlevel() + nHeight/4 };
 
-		DrawEvent tText(Type::TEXT, nodeColor, nRenderer->getRenderer(), startPoint, "|--", 10, "RobotoMono-Thin.ttf");
-		DrawEvent lText(Type::TEXT, nodeColor, nRenderer->getRenderer(), startPoint, "^--", 10, "RobotoMono-Thin.ttf");
-		DrawEvent sText(Type::TEXT, nodeColor, nRenderer->getRenderer(), strPoint, "|  ", 10, "RobotoMono-Thin.ttf");
-		DrawEvent dText(Type::TEXT, nodeColor, nRenderer->getRenderer(), dataPoint, start->getData(), 10, "RobotoMono-Thin.ttf");
+		DrawEvent dText(Type::TEXT, nodeColor, nRenderer->getRenderer(), dataPoint, start->getData(), nHeight/2, "RobotoMono-Thin.ttf");
+		DrawEvent hLine(Type::LINE, nodeColor, nRenderer->getRenderer(), lSPoint, lEPoint);
 
 		///////////////////////
-		//std::cout << prefix;
 
-		if (isLeft == true) {
-			nRenderer->addDrawEvent(tText);
-		}
-		else {
-			nRenderer->addDrawEvent(lText);
+		//save node x,y
+		start->setX(lSPoint.x);
+		start->setY(lSPoint.y);
+
+		//only call if not root (draw connecting lines)
+		if (start->getParent()) {
+			SDL_Point tempStart = { start->getX(), start->getY() };
+			SDL_Point tempEnd = { start->getParent()->getX() + nHeight, start->getParent()->getY() + nHeight/2 };
+			DrawEvent vLine(Type::LINE, nodeColor, nRenderer->getRenderer(), tempStart, tempEnd);
+
+			if (isLeft == true) {
+				nRenderer->addDrawEvent(hLine);
+				
+			}
+			else {
+				nRenderer->addDrawEvent(hLine);
+				nRenderer->addDrawEvent(vLine);
+			}
 		}
 		
-		// print the value of the node
+		// draw the value of the node
 		nRenderer->addDrawEvent(dText);
 
 		//increase y here
-		this->yLevel += 20;
+		this->yLevel += nHeight;
 		
-		// enter the next tree level - left and right branch
+		// enter the next tree level - left and right branch (increase x level)
 		if (isLeft == true) {
-			//nHistory.push_back(sText);
-			//nRenderer->addDrawEvent(sText);
-			drawTree(nRenderer, startPoint.x + 20, startPoint.y, true, start->getLeft());
-			drawTree(nRenderer, startPoint.x + 20, startPoint.y, false, start->getRight());
+			drawTree(nRenderer, startX + nHeight, nHeight, true, start->getLeft());
+			drawTree(nRenderer, startX + nHeight, nHeight, false, start->getRight());
 		}
 		else {
-			drawTree(nRenderer, startPoint.x + 20, startPoint.y, true, start->getLeft());
-			drawTree(nRenderer, startPoint.x + 20, startPoint.y, false, start->getRight());
+			drawTree(nRenderer, startX + nHeight, nHeight, true, start->getLeft());
+			drawTree(nRenderer, startX + nHeight, nHeight, false, start->getRight());
 		}
 		
-
-
 	}
 
-	
 }
