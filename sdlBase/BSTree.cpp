@@ -142,6 +142,7 @@ int BST::getXlevel() {
 //send to renderer; preorder traversal
 void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft, BSTNode* start) {
 	
+	
 	SDL_Color nodeColor = { 51, 150, 61, 255 };
 
 	if (start == nullptr) {
@@ -149,6 +150,13 @@ void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft
 	}
 	else
 	{
+		//change color if visited
+		if (start->checkVisited()) {
+			nodeColor.r = 245;
+			nodeColor.g = 69;
+			nodeColor.b = 66;
+		}
+
 		SDL_Point dataPoint = { startX + nHeight, this->getYlevel()};
 		SDL_Point lSPoint = { startX + nHeight/4, this->getYlevel() + nHeight/4 };
 		SDL_Point lEPoint = { startX + (nHeight-nHeight/5), this->getYlevel() + nHeight/4 };
@@ -191,4 +199,21 @@ void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft
 		
 	}
 
+}
+
+//search for char
+void BST::searchChar(char nChar, BSTNode* start, string* nResult) {
+	if (start == nullptr) {
+		return;
+	}
+
+	if (start->getKey() == nChar) {
+		*nResult = start->getData();
+		start->visit();
+	}
+	else {
+		searchChar(nChar, start->getLeft(), nResult);
+		searchChar(nChar, start->getRight(), nResult);
+	}
+	
 }

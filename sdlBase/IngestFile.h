@@ -32,14 +32,14 @@ public:
 	//open file
 	bool openFile();
 
-	//ingest file into vectors
+	//ingest file into vectors (closes file)
 	bool ingestFile();
 
 	//needs sorted data file ingested with ingest file to vectors
 	void medianCut(int nStart, int nEnd);
 
-	//load to tree (closes file)
-	bool loadToTree(BST nTree);
+	//load to tree
+	bool loadToTree(BST* nTree);
 
 	//print ingested key queue (emptys queue)
 	void printQueue();

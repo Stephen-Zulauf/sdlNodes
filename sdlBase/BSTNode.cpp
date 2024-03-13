@@ -1,6 +1,7 @@
 #include "BSTNode.h"
 
 /*Members*/
+//setters
 void BSTNode::setKey(char nKey) {
 	this->key = nKey;
 }
@@ -25,7 +26,17 @@ void BSTNode::setY(float nY) {
 void BSTNode::setMod(float nMod) {
 	this->mod = nMod;
 }
+void BSTNode::visit() {
+	if (this->visited) {
+		this->visited = false;
+	}
+	else {
+		this->visited = true;
+	}
+	
+}
 
+//getters
 char BSTNode::getKey() const {
 	return this->key;
 }
@@ -50,6 +61,10 @@ float BSTNode::getY() const{
 float BSTNode::getMod() const{
 	return this->mod;
 }
+bool BSTNode::checkVisited() {
+	return this->visited;
+}
+
 
 //overload for printing
 ostream& operator<<(ostream& os, const BSTNode& node) {

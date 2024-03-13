@@ -21,6 +21,11 @@ private:
 	BSTNode* left;
 	BSTNode* right;
 
+	//color sent to rend
+	//SDL_Color color;
+	////visited change color if visited by search function
+	bool visited = false;
+
 public:
 	/*Constructors*/
 	BSTNode() {
@@ -58,6 +63,7 @@ public:
 	void setX(float nX);
 	void setY(float nY);
 	void setMod(float nMod);
+	void visit();
 
 	char getKey() const;
 	string getData() const;
@@ -67,6 +73,8 @@ public:
 	float getX() const;
 	float getY() const;
 	float getMod() const;
+	bool checkVisited();
+	
 
 };
 

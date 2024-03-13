@@ -17,7 +17,7 @@ bool Ingest::openFile() {
 
 }
 
-//ingest file (median cut)
+//ingest file (closes file)
 bool Ingest::ingestFile() {
 
 	this->openFile();
@@ -76,8 +76,13 @@ void Ingest::medianCut(int nStart, int nEnd) {
 	
 }
 
-//load to tree (closes file)
-bool Ingest::loadToTree(BST nTree) {
+//load to tree 
+bool Ingest::loadToTree(BST* nTree) {
+	while (this->keys.size() != 0) {
+		nTree->insertNode(this->keys.front(),this->data.front(), nTree->getRoot());
+		this->keys.pop();
+		this->data.pop();
+	}
 	return true;
 }
 
