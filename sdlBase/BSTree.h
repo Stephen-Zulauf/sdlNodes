@@ -41,7 +41,7 @@ public:
 	BSTNode* getRoot();
 
 	//adds item allocates new node
-	bool insertNode(string nData, BSTNode* start);
+	bool insertNode(char nKey, string nData, BSTNode* start);
 
 	//traversal
 	void inOrderTraversal(BSTNode* start);

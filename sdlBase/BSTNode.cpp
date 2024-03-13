@@ -1,6 +1,9 @@
 #include "BSTNode.h"
 
 /*Members*/
+void BSTNode::setKey(char nKey) {
+	this->key = nKey;
+}
 void BSTNode::setData(string nData) {
 	this->data = nData;
 }
@@ -23,6 +26,9 @@ void BSTNode::setMod(float nMod) {
 	this->mod = nMod;
 }
 
+char BSTNode::getKey() const {
+	return this->key;
+}
 string BSTNode::getData() const {
 	return this->data;
 }

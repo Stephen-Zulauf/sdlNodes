@@ -136,6 +136,7 @@
     <ClCompile Include="BSTNode.cpp" />
     <ClCompile Include="BSTree.cpp" />
     <ClCompile Include="DrawEvent.cpp" />
+    <ClCompile Include="IngestFile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -144,11 +145,15 @@
     <ClInclude Include="BSTNode.h" />
     <ClInclude Include="BSTree.h" />
     <ClInclude Include="DrawEvent.h" />
+    <ClInclude Include="IngestFile.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="RobotoMono-Thin.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MorseTable.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

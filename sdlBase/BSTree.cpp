@@ -12,16 +12,18 @@ void BST::destroyTree() {
 	}
 }
 
+//public
+
 //get root
 BSTNode* BST::getRoot() {
 	return this->root;
 }
 
 //adds item allocates new node
-bool BST::insertNode(string nData, BSTNode* start) {
+bool BST::insertNode(char nKey, string nData, BSTNode* start) {
 	BSTNode* temp;
 	if (this->root == nullptr) {
-		temp = new BSTNode(nData);
+		temp = new BSTNode(nKey, nData);
 		if (temp) {
 			this->root = temp;
 			return true;
@@ -29,9 +31,9 @@ bool BST::insertNode(string nData, BSTNode* start) {
 	}
 	else {
 		//goes left
-		if (stoi(start->getData()) > stoi(nData)) {
+		if (start->getKey() > nKey) {
 			if (start->getLeft() == nullptr) {
-				temp = new BSTNode(nData);
+				temp = new BSTNode(nKey, nData);
 				if (temp) {
 					temp->setParent(start);
 					start->setLeft(temp);
@@ -40,13 +42,13 @@ bool BST::insertNode(string nData, BSTNode* start) {
 
 			}
 			else {
-				insertNode(nData, start->getLeft());
+				insertNode(nKey, nData, start->getLeft());
 			}
 		}
 		//goes right
-		else if (stoi(start->getData()) < stoi(nData)) {
+		else if (start->getKey() < nKey) {
 			if (start->getRight() == nullptr) {
-				temp = new BSTNode(nData);
+				temp = new BSTNode(nKey, nData);
 				if (temp) {
 					temp->setParent(start);
 					start->setRight(temp);
@@ -55,7 +57,7 @@ bool BST::insertNode(string nData, BSTNode* start) {
 
 			}
 			else {
-				insertNode(nData, start->getRight());
+				insertNode(nKey, nData, start->getRight());
 			}
 
 		}
@@ -151,7 +153,8 @@ void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft
 		SDL_Point lSPoint = { startX + nHeight/4, this->getYlevel() + nHeight/4 };
 		SDL_Point lEPoint = { startX + (nHeight-nHeight/5), this->getYlevel() + nHeight/4 };
 
-		DrawEvent dText(Type::TEXT, nodeColor, nRenderer->getRenderer(), dataPoint, start->getData(), nHeight/2, "RobotoMono-Thin.ttf");
+		string key(1, start->getKey());
+		DrawEvent dText(Type::TEXT, nodeColor, nRenderer->getRenderer(), dataPoint, "["+ key+"]"+"[" + start->getData() + "]", nHeight / 2, "RobotoMono-Thin.ttf");
 		DrawEvent hLine(Type::LINE, nodeColor, nRenderer->getRenderer(), lSPoint, lEPoint);
 
 		///////////////////////
@@ -166,21 +169,15 @@ void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft
 			SDL_Point tempEnd = { start->getParent()->getX() + nHeight, start->getParent()->getY() + nHeight/2 };
 			DrawEvent vLine(Type::LINE, nodeColor, nRenderer->getRenderer(), tempStart, tempEnd);
 
-			if (isLeft == true) {
-				nRenderer->addDrawEvent(hLine);
-				
-			}
-			else {
-				nRenderer->addDrawEvent(hLine);
-				nRenderer->addDrawEvent(vLine);
-			}
+			nRenderer->addDrawEvent(hLine);
+			nRenderer->addDrawEvent(vLine);
 		}
 		
 		// draw the value of the node
 		nRenderer->addDrawEvent(dText);
 
-		//increase y here
-		this->yLevel += nHeight;
+		//increase y level
+		this->yLevel += nHeight - nHeight/4;
 		
 		// enter the next tree level - left and right branch (increase x level)
 		if (isLeft == true) {

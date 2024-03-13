@@ -12,6 +12,7 @@ using std::endl;
 class BSTNode {
 
 private:
+	char key;
 	string data;
 	float X = 0;
 	float Y = 0;
@@ -23,13 +24,15 @@ private:
 public:
 	/*Constructors*/
 	BSTNode() {
+		this->key = ' ';
 		this->data = " ";
 		this->parent = nullptr;
 		this->left = nullptr;
 		this->right = nullptr;
 	}
 
-	BSTNode(string nData) {
+	BSTNode(char nKey, string nData) {
+		this->key = nKey;
 		this->data = nData;
 		this->parent = nullptr;
 		this->left = nullptr;
@@ -47,6 +50,7 @@ public:
 	}
 
 	/*Members*/
+	void setKey(char nKey);
 	void setData(string nData);
 	void setLeft(BSTNode* nLeft);
 	void setRight(BSTNode* nRight);
@@ -55,6 +59,7 @@ public:
 	void setY(float nY);
 	void setMod(float nMod);
 
+	char getKey() const;
 	string getData() const;
 	BSTNode* getLeft() const;
 	BSTNode* getRight() const;

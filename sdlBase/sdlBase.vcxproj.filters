@@ -33,6 +33,9 @@
     <ClCompile Include="BSTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IngestFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -50,10 +53,18 @@
     <ClInclude Include="BSTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IngestFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="RobotoMono-Thin.ttf">
       <Filter>Resource Files</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MorseTable.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
