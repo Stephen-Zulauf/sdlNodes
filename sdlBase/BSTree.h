@@ -68,7 +68,13 @@ public:
 	//send to renderer
 	void drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft, BSTNode* start);
 
+	//clear visited nodes
+	void clearVisits(BSTNode* start);
+
 	//search for char
 	void searchChar(char nChar, BSTNode* start, string* nResult);
+
+	//search for string
+	void searchString(string nString, BSTNode* start, string* nResult);
 
 };

@@ -201,6 +201,20 @@ void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft
 
 }
 
+//clear visited nodes
+void BST::clearVisits(BSTNode* start) {
+	if (start == nullptr) {
+		return;
+	}
+
+	if (start->checkVisited()) {
+		start->unVisit();
+	}
+
+	clearVisits(start->getLeft());
+	clearVisits(start->getRight());
+}
+
 //search for char
 void BST::searchChar(char nChar, BSTNode* start, string* nResult) {
 	if (start == nullptr) {
@@ -216,4 +230,19 @@ void BST::searchChar(char nChar, BSTNode* start, string* nResult) {
 		searchChar(nChar, start->getRight(), nResult);
 	}
 	
+}
+
+//search for string
+void BST::searchString(string nString, BSTNode* start, string* nResult) {
+	int i = 0;
+	string temp;
+	string result;
+	
+	for (i = 0; i < nString.size(); i++) {
+		searchChar(nString[i], start, &temp);
+		result += temp;
+	}
+
+	*nResult = result;
+
 }

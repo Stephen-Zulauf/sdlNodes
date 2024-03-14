@@ -4,10 +4,9 @@
 #include "Renderer.h"
 #include "Window.h"
 #include "DrawEvent.h"
-
 #include "IngestFile.h"
-
 #include "BSTree.h"
+#include "TextBox.h"
 
 using std::cout;
 using std::endl;
@@ -60,8 +59,7 @@ int main(int argc, char* argv[])
 	bool running = true;
 	string searchResult;
 	string buffer;
-	int textLine = 1;
-	int textCol = 1;
+	string outputBuffer;
 	
 	//load and ingest file
 	Ingest fileLoader("MorseTable.txt");
@@ -71,12 +69,6 @@ int main(int argc, char* argv[])
 	//create tree
 	BST tree;
 	fileLoader.loadToTree(&tree);
-
-	////test search
-	//string testString;
-	//tree.searchChar('k',tree.getRoot(), &testString);
-	//cout << testString << endl;
-
 
 	//setup SDL
 	SDL_Event e;
@@ -93,70 +85,24 @@ int main(int argc, char* argv[])
 	//create window and renderer
 	Window window("Binary Visualizer", WIDTH, HEIGHT);
 	Renderer renderer(window.getWindow(), bgColor);
+
+	//create text boxes
+	SDL_Rect upTxt = { (WIDTH / 2) + (WIDTH / 100), (HEIGHT/100), (WIDTH / 2) - (WIDTH / 65), (HEIGHT / 2) - (HEIGHT / 65) };
+	TextBox upperText(&renderer, nodeColor, upTxt, 15);
+	SDL_Rect lrTxt = { (WIDTH / 2) + (WIDTH / 100), (HEIGHT / 2), (WIDTH / 2) - (WIDTH / 65), (HEIGHT / 2) - (HEIGHT / 65) };
+	TextBox lowerText(&renderer, nodeColor, lrTxt, 15);
 	
 	while (running) {
 
+		//draw frames
 		drawLayout(&renderer, nodeColor, WIDTH, HEIGHT);
+
+		//draw tree
 		tree.drawTree(&renderer, 0, 20, false, tree.getRoot());
-		
-		while (SDL_PollEvent(&e) != 0) {
-			switch (e.type) {
-			case SDL_QUIT:
-				running = false;
-				break;
-			case SDL_TEXTINPUT:
-				buffer += e.text.text;
-				
-				break;
-			case SDL_KEYDOWN:
-				if (e.key.keysym.sym == SDLK_BACKSPACE) {
-					buffer = buffer.substr(0, buffer.length() - 1);
-				}
-				else if (e.key.keysym.sym == SDLK_RETURN) {
-					buffer += '~';
-				}
-				break;
-			}
-		}
 
-		//print text input
-		
-		//check for out of bounds
-		if (textCol * 13 > (WIDTH / 2) - (WIDTH / 65) - 13 && buffer[buffer.size()] != '~') {
-			buffer += '~';
-		}
-
-		textLine = 1;
-		textCol = 0;
-
-		for (int i = 0; i < buffer.size(); i++) {
-			string key(1, buffer[i]);
-
-			//check for new line
-			if (buffer[i] == '~') {
-				textLine += 1;
-				textCol = 0;
-			}
-			//print char
-			else {
-				
-				SDL_Point textPos = { (WIDTH / 2) + (WIDTH / 90) + (textCol * 13), (WIDTH / 90) + (textLine * 13) };
-				DrawEvent dText(Type::TEXT, nodeColor, renderer.getRenderer(), textPos, key, 13, "RobotoMono-Thin.ttf");
-				renderer.addDrawEvent(dText);
-				tree.searchChar(buffer[i], tree.getRoot(), &searchResult);
-				textCol += 1;
-			}
-			
-		}
-		
-		//print search output
-		/*for (int i = 0; i < buffer.size(); i++) {
-			string key(1, buffer[i]);
-			SDL_Point textPos = { (WIDTH / 2) + (WIDTH / 90) + (i * 10), (WIDTH / 90) };
-			DrawEvent dText(Type::TEXT, nodeColor, renderer.getRenderer(), textPos, key, 10, "RobotoMono-Thin.ttf");
-			renderer.addDrawEvent(dText);
-			tree.searchChar(buffer[i], tree.getRoot(), &searchResult);
-		}*/
+		//print text input/output
+		upperText.draw();
+		lowerText.draw();
 
 		//update renderer & draw queue
 		if (!renderer.updateRenderer()) {
@@ -164,6 +110,45 @@ int main(int argc, char* argv[])
 		}
 
 		tree.setYlevel(0);
+		
+		while (SDL_PollEvent(&e) != 0) {
+			switch (e.type) {
+			case SDL_QUIT:
+				running = false;
+				break;
+			case SDL_TEXTINPUT:
+
+				//update input
+				buffer += e.text.text;
+				upperText.updateBuffer(buffer);
+
+				//update output
+				tree.searchString(buffer, tree.getRoot(), &outputBuffer);
+				lowerText.updateBuffer(outputBuffer);
+				
+				break;
+			case SDL_KEYDOWN:
+				if (e.key.keysym.sym == SDLK_BACKSPACE) {
+					buffer = buffer.substr(0, buffer.length() - 1);
+
+					//clear visited
+					tree.clearVisits(tree.getRoot());
+
+					//update input
+					upperText.updateBuffer(buffer);
+
+					//update output
+					tree.searchString(buffer, tree.getRoot(), &outputBuffer);
+					lowerText.updateBuffer(outputBuffer);
+
+				}
+				else if (e.key.keysym.sym == SDLK_RETURN) {
+					buffer += '~';
+				}
+				break;
+			}
+		}
+		
 		
 	}
 

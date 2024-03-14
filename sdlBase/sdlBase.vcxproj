@@ -139,6 +139,7 @@
     <ClCompile Include="IngestFile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +148,7 @@
     <ClInclude Include="DrawEvent.h" />
     <ClInclude Include="IngestFile.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="TextBox.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

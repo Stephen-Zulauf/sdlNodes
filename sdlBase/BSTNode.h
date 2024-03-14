@@ -64,6 +64,7 @@ public:
 	void setY(float nY);
 	void setMod(float nMod);
 	void visit();
+	void unVisit();
 
 	char getKey() const;
 	string getData() const;

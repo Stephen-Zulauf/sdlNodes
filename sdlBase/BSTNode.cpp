@@ -27,13 +27,10 @@ void BSTNode::setMod(float nMod) {
 	this->mod = nMod;
 }
 void BSTNode::visit() {
-	if (this->visited) {
-		this->visited = false;
-	}
-	else {
-		this->visited = true;
-	}
-	
+	this->visited = true;
+}
+void BSTNode::unVisit() {
+	this->visited = false;
 }
 
 //getters
