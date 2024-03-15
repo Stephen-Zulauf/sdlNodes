@@ -31,24 +31,10 @@ void drawLayout(Renderer* nRenderer, SDL_Color nColor, int nWidth, int nHeight) 
 	DrawEvent vL1ine(Type::LINE, nColor, nRenderer->getRenderer(), vL1start, vL1end);
 	DrawEvent vL2ine(Type::LINE, nColor, nRenderer->getRenderer(), vL2start, vL2end);
 
-	//upper textbox
-	SDL_Rect uTRect = { (nWidth / 2) + (nWidth / 100), (nWidth / 100), (nWidth / 2) - (nWidth / 65), (nHeight/2) - (nHeight / 65) };
-	DrawEvent upperTboxBg(Type::FILLRECT, textBG, nRenderer->getRenderer(), uTRect);
-	DrawEvent upperTboxBorder(Type::RECT, nColor, nRenderer->getRenderer(), uTRect);
-	
-	//lower textbox
-	SDL_Rect lTRect = { (nWidth / 2) + (nWidth / 100), (nHeight / 2), (nWidth / 2) - (nWidth / 65), (nHeight / 2) - (nHeight / 65) };
-	DrawEvent lowerTboxBg(Type::FILLRECT, textBG, nRenderer->getRenderer(), lTRect);
-	DrawEvent lowerTboxBorder(Type::RECT, nColor, nRenderer->getRenderer(), lTRect);
-
 	//queue events
 	nRenderer->addDrawEvent(outerFrame);
 	nRenderer->addDrawEvent(vL1ine);
 	nRenderer->addDrawEvent(vL2ine);
-	nRenderer->addDrawEvent(upperTboxBg);
-	nRenderer->addDrawEvent(upperTboxBorder);
-	nRenderer->addDrawEvent(lowerTboxBg);
-	nRenderer->addDrawEvent(lowerTboxBorder);
 }
 
 int main(int argc, char* argv[])
@@ -74,6 +60,7 @@ int main(int argc, char* argv[])
 	SDL_Event e;
 	SDL_Color bgColor = { 0, 0, 0, 255 };
 	SDL_Color nodeColor = { 51, 150, 61, 255 };
+	SDL_Color textBG = { 10, 10, 10, 255 };
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		cout << "FAILED at SDL_INIT" << endl;
@@ -88,28 +75,13 @@ int main(int argc, char* argv[])
 
 	//create text boxes
 	SDL_Rect upTxt = { (WIDTH / 2) + (WIDTH / 100), (HEIGHT/100), (WIDTH / 2) - (WIDTH / 65), (HEIGHT / 2) - (HEIGHT / 65) };
-	TextBox upperText(&renderer, nodeColor, upTxt, 15);
+	TextBox upperText(&renderer, nodeColor, textBG, nodeColor, upTxt, 13);
 	SDL_Rect lrTxt = { (WIDTH / 2) + (WIDTH / 100), (HEIGHT / 2), (WIDTH / 2) - (WIDTH / 65), (HEIGHT / 2) - (HEIGHT / 65) };
-	TextBox lowerText(&renderer, nodeColor, lrTxt, 15);
+	TextBox lowerText(&renderer, nodeColor, textBG, nodeColor, lrTxt, 13);
 	
 	while (running) {
 
-		//draw frames
-		drawLayout(&renderer, nodeColor, WIDTH, HEIGHT);
-
-		//draw tree
-		tree.drawTree(&renderer, 0, 20, false, tree.getRoot());
-
-		//print text input/output
-		upperText.draw();
-		lowerText.draw();
-
-		//update renderer & draw queue
-		if (!renderer.updateRenderer()) {
-			running = false;
-		}
-
-		tree.setYlevel(0);
+		
 		
 		while (SDL_PollEvent(&e) != 0) {
 			switch (e.type) {
@@ -125,8 +97,26 @@ int main(int argc, char* argv[])
 				//update output
 				tree.searchString(buffer, tree.getRoot(), &outputBuffer);
 				lowerText.updateBuffer(outputBuffer);
+
+				//draw tree
+				tree.drawTree(&renderer, 0, 20, false, tree.getRoot());
+
+				//draw frames
+				drawLayout(&renderer, nodeColor, WIDTH, HEIGHT);
+
+				//print text input/output
+				upperText.draw();
+				lowerText.draw();
+
+				//update renderer & draw queue
+				if (!renderer.updateRenderer()) {
+					running = false;
+				}
+
+				tree.setYlevel(0);
 				
 				break;
+
 			case SDL_KEYDOWN:
 				if (e.key.keysym.sym == SDLK_BACKSPACE) {
 					buffer = buffer.substr(0, buffer.length() - 1);
@@ -141,6 +131,23 @@ int main(int argc, char* argv[])
 					tree.searchString(buffer, tree.getRoot(), &outputBuffer);
 					lowerText.updateBuffer(outputBuffer);
 
+					//draw tree
+					tree.drawTree(&renderer, 0, 20, false, tree.getRoot());
+
+					//draw frames
+					drawLayout(&renderer, nodeColor, WIDTH, HEIGHT);
+
+					//print text input/output
+					upperText.draw();
+					lowerText.draw();
+
+					//update renderer & draw queue
+					if (!renderer.updateRenderer()) {
+						running = false;
+					}
+
+					tree.setYlevel(0);
+
 				}
 				else if (e.key.keysym.sym == SDLK_RETURN) {
 					buffer += '~';
@@ -148,6 +155,27 @@ int main(int argc, char* argv[])
 				break;
 			}
 		}
+
+		if (SDL_PollEvent(&e) == 0) {
+			//draw tree
+			tree.drawTree(&renderer, 0, 20, false, tree.getRoot());
+
+			//draw frames
+			drawLayout(&renderer, nodeColor, WIDTH, HEIGHT);
+
+			//print text input/output
+			upperText.draw();
+			lowerText.draw();
+
+			//update renderer & draw queue
+			if (!renderer.updateRenderer()) {
+				running = false;
+			}
+
+			tree.setYlevel(0);
+		}
+		
+
 		
 		
 	}

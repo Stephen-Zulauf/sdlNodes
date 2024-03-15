@@ -8,6 +8,11 @@ void TextBox::updateBuffer(string nBuffer) {
 //draw textbox
 void TextBox::draw() {
 
+	DrawEvent backGround(Type::FILLRECT, this->bgColor, this->renderer->getRenderer(), this->location);
+	DrawEvent border(Type::RECT, this->frameColor, this->renderer->getRenderer(), location);
+	renderer->addDrawEvent(backGround);
+	renderer->addDrawEvent(border);
+
 	this->row = 1;
 	this->column = 1;
 	int i;

@@ -19,16 +19,18 @@ private:
 	Renderer* renderer;
 
 	SDL_Color textColor;
-	//SDL_Color bgColor;
-	//SDL_Color frameColor;
+	SDL_Color bgColor;
+	SDL_Color frameColor;
 
 	SDL_Rect location;
 	int fontSize;
 
 public:
 
-	TextBox(Renderer* nRenderer, SDL_Color nText, SDL_Rect nLoc, int nSize) {
+	TextBox(Renderer* nRenderer, SDL_Color nText, SDL_Color nBGColor, SDL_Color nFrameColor, SDL_Rect nLoc, int nSize) {
 		this->renderer = nRenderer;
+		this->bgColor = nBGColor;
+		this->frameColor = nFrameColor;
 		this->textColor = nText;
 		this->location = nLoc;
 		this->fontSize = nSize;
