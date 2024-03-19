@@ -7,6 +7,7 @@
 #include "IngestFile.h"
 #include "BSTree.h"
 #include "TextBox.h"
+#include "fontAtlas.h"
 
 using std::cout;
 using std::endl;
@@ -60,6 +61,7 @@ int main(int argc, char* argv[])
 	SDL_Event e;
 	SDL_Color bgColor = { 0, 0, 0, 255 };
 	SDL_Color nodeColor = { 51, 150, 61, 255 };
+	SDL_Color vNodeColor = { 230, 30, 33, 255 };
 	SDL_Color textBG = { 10, 10, 10, 255 };
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -75,9 +77,14 @@ int main(int argc, char* argv[])
 
 	//create text boxes
 	SDL_Rect upTxt = { (WIDTH / 2) + (WIDTH / 100), (HEIGHT/100), (WIDTH / 2) - (WIDTH / 65), (HEIGHT / 2) - (HEIGHT / 65) };
-	TextBox upperText(&renderer, nodeColor, textBG, nodeColor, upTxt, 13);
+	TextBox upperText(&renderer, "RobotoMono-Thin.ttf", nodeColor, textBG, nodeColor, upTxt, 13);
 	SDL_Rect lrTxt = { (WIDTH / 2) + (WIDTH / 100), (HEIGHT / 2), (WIDTH / 2) - (WIDTH / 65), (HEIGHT / 2) - (HEIGHT / 65) };
-	TextBox lowerText(&renderer, nodeColor, textBG, nodeColor, lrTxt, 13);
+	TextBox lowerText(&renderer, "RobotoMono-Thin.ttf", nodeColor, textBG, nodeColor, lrTxt, 13);
+
+	//atlas for tree
+	FontAtlas treeAtlas("RobotoMono-Thin.ttf", renderer.getRenderer(), 12, nodeColor);
+	FontAtlas vTreeAtlas("RobotoMono-Thin.ttf", renderer.getRenderer(), 12, vNodeColor);
+
 	
 	while (running) {
 
@@ -99,7 +106,7 @@ int main(int argc, char* argv[])
 				lowerText.updateBuffer(outputBuffer);
 
 				//draw tree
-				tree.drawTree(&renderer, 0, 20, false, tree.getRoot());
+				tree.drawTree(&renderer, 0, 20, false, tree.getRoot(), &treeAtlas, &vTreeAtlas);
 
 				//draw frames
 				drawLayout(&renderer, nodeColor, WIDTH, HEIGHT);
@@ -132,7 +139,7 @@ int main(int argc, char* argv[])
 					lowerText.updateBuffer(outputBuffer);
 
 					//draw tree
-					tree.drawTree(&renderer, 0, 20, false, tree.getRoot());
+					tree.drawTree(&renderer, 0, 20, false, tree.getRoot(), &treeAtlas, &vTreeAtlas);
 
 					//draw frames
 					drawLayout(&renderer, nodeColor, WIDTH, HEIGHT);
@@ -158,7 +165,7 @@ int main(int argc, char* argv[])
 
 		if (SDL_PollEvent(&e) == 0) {
 			//draw tree
-			tree.drawTree(&renderer, 0, 20, false, tree.getRoot());
+			tree.drawTree(&renderer, 0, 20, false, tree.getRoot(), &treeAtlas, &vTreeAtlas);
 
 			//draw frames
 			drawLayout(&renderer, nodeColor, WIDTH, HEIGHT);

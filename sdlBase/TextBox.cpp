@@ -26,7 +26,7 @@ void TextBox::draw() {
 
 		string sub(1,buffer[i]);
 		SDL_Point textPos = { this->location.x + (this->column * this->fontSize), this->location.y + (this->row * this->fontSize) };
-		DrawEvent text(Type::TEXT, this->textColor, this->renderer->getRenderer(), textPos, sub, this->fontSize, "RobotoMono-Thin.ttf");
+		DrawEvent text(Type::TEXT, this->renderer->getRenderer(), textPos, sub, this->fontSize, this->atlas);
 		renderer->addDrawEvent(text);
 
 		column += 1;

@@ -7,6 +7,7 @@
 
 #include "DrawEvent.h"
 #include "Renderer.h"
+#include "fontAtlas.h"
 
 using std::string;
 using std::istringstream;
@@ -17,6 +18,8 @@ private:
 	int column = 0;
 	string buffer;
 	Renderer* renderer;
+	FontAtlas* atlas = nullptr;
+	string fontFileName;
 
 	SDL_Color textColor;
 	SDL_Color bgColor;
@@ -27,13 +30,15 @@ private:
 
 public:
 
-	TextBox(Renderer* nRenderer, SDL_Color nText, SDL_Color nBGColor, SDL_Color nFrameColor, SDL_Rect nLoc, int nSize) {
+	TextBox(Renderer* nRenderer, string nFontFile, SDL_Color nText, SDL_Color nBGColor, SDL_Color nFrameColor, SDL_Rect nLoc, int nSize) {
 		this->renderer = nRenderer;
+		this->fontFileName = nFontFile;
 		this->bgColor = nBGColor;
 		this->frameColor = nFrameColor;
 		this->textColor = nText;
 		this->location = nLoc;
 		this->fontSize = nSize;
+		this->atlas = new FontAtlas(this->fontFileName, this->renderer->getRenderer(), this->fontSize, this->textColor);
 	}
 
 	//update buffer
@@ -44,5 +49,6 @@ public:
 
 	//increase row (for when enter is pressed)
 	void incRow();
+
 
 };

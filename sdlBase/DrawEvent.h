@@ -4,6 +4,7 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <string>
+#include "fontAtlas.h"
 
 using std::cout;
 using std::endl;
@@ -29,10 +30,10 @@ private:
 	SDL_Point end = { 0,0 };
 	int rad = 0;
 	//font stuff
-	TTF_Font* font = nullptr;
 	string text;
 	int textSize = 0;
-	string File;
+	FontAtlas* atlas = nullptr;
+
 	//surface or texture
 	SDL_Surface* surface = nullptr;
 	SDL_Texture* texture = nullptr;
@@ -70,21 +71,18 @@ public:
 		this->start = nCenter;
 		this->rad = nRad;
 	}
-	//Text; currently needs the text, text-size and font file
-	DrawEvent(Type nType, SDL_Color nColor, SDL_Renderer* nRenderer, SDL_Point nStart, string nText, int nTextSize, string nFile) {
+	//Text; currently needs the text, text-size, color
+	DrawEvent(Type nType, SDL_Renderer* nRenderer, SDL_Point nStart, string nText, int nTextSize, FontAtlas* nAtlas) {
 		this->type = nType;
-		this->color = nColor;
 		this->renderer = nRenderer;
 		this->start = nStart;
 		this->text = nText;
 		this->textSize = nTextSize;
-		this->File = nFile;
+		this->atlas = nAtlas;
+
 	}
 	~DrawEvent() {
 		//cout << "DRAWEVENT DESTRUCT" << endl;
-		if (this->font) {
-			TTF_CloseFont(this->font);
-		}
 		if (this->surface) {
 			SDL_FreeSurface(this->surface);
 		}

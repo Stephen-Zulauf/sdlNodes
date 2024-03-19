@@ -136,6 +136,7 @@
     <ClCompile Include="BSTNode.cpp" />
     <ClCompile Include="BSTree.cpp" />
     <ClCompile Include="DrawEvent.cpp" />
+    <ClCompile Include="fontAtlas.cpp" />
     <ClCompile Include="IngestFile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="BSTNode.h" />
     <ClInclude Include="BSTree.h" />
     <ClInclude Include="DrawEvent.h" />
+    <ClInclude Include="fontAtlas.h" />
     <ClInclude Include="IngestFile.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="TextBox.h" />

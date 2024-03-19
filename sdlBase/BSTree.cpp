@@ -140,7 +140,7 @@ int BST::getXlevel() {
 }
 
 //send to renderer; preorder traversal
-void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft, BSTNode* start) {
+void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft, BSTNode* start, FontAtlas* atlas, FontAtlas* vAtlas) {
 	
 	
 	SDL_Color nodeColor = { 51, 150, 61, 255 };
@@ -162,7 +162,8 @@ void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft
 		SDL_Point lEPoint = { startX + (nHeight-nHeight/5), this->getYlevel() + nHeight/4 };
 
 		string key(1, start->getKey());
-		DrawEvent dText(Type::TEXT, nodeColor, nRenderer->getRenderer(), dataPoint, "["+ key+"]"+"[" + start->getData() + "]", nHeight / 2, "RobotoMono-Thin.ttf");
+		DrawEvent nText(Type::TEXT, nRenderer->getRenderer(), dataPoint, key + start->getData(), nHeight / 2, atlas);
+		DrawEvent vText(Type::TEXT, nRenderer->getRenderer(), dataPoint, key + start->getData(), nHeight / 2, vAtlas);
 		DrawEvent hLine(Type::LINE, nodeColor, nRenderer->getRenderer(), lSPoint, lEPoint);
 
 		///////////////////////
@@ -182,19 +183,25 @@ void BST::drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft
 		}
 		
 		// draw the value of the node
-		nRenderer->addDrawEvent(dText);
+		if (start->checkVisited()) {
+			nRenderer->addDrawEvent(vText);
+		}
+		else {
+			nRenderer->addDrawEvent(nText);
+		}
+		
 
 		//increase y level
 		this->yLevel += nHeight - nHeight/4;
 		
 		// enter the next tree level - left and right branch (increase x level)
 		if (isLeft == true) {
-			drawTree(nRenderer, startX + nHeight, nHeight, true, start->getLeft());
-			drawTree(nRenderer, startX + nHeight, nHeight, false, start->getRight());
+			drawTree(nRenderer, startX + nHeight, nHeight, true, start->getLeft(),atlas, vAtlas);
+			drawTree(nRenderer, startX + nHeight, nHeight, false, start->getRight(), atlas, vAtlas);
 		}
 		else {
-			drawTree(nRenderer, startX + nHeight, nHeight, true, start->getLeft());
-			drawTree(nRenderer, startX + nHeight, nHeight, false, start->getRight());
+			drawTree(nRenderer, startX + nHeight, nHeight, true, start->getLeft(), atlas, vAtlas);
+			drawTree(nRenderer, startX + nHeight, nHeight, false, start->getRight(), atlas, vAtlas);
 		}
 		
 	}

@@ -8,6 +8,7 @@
 #include "BSTNode.h"
 #include "Renderer.h"
 #include "DrawEvent.h"
+#include "fontAtlas.h"
 
 using std::queue;
 using std::vector;
@@ -66,7 +67,7 @@ public:
 	int getXlevel();
 
 	//send to renderer
-	void drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft, BSTNode* start);
+	void drawTree(Renderer* nRenderer, float startX, float nHeight, bool isLeft, BSTNode* start, FontAtlas* atlas, FontAtlas* vAtlas);
 
 	//clear visited nodes
 	void clearVisits(BSTNode* start);
